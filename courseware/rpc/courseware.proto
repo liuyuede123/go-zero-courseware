@@ -1,0 +1,48 @@
+syntax = "proto3";
+
+package user;
+option go_package = "./courseware";
+
+// 新增
+message AddRequest {
+  string Code = 1;
+  string Name = 2;
+  uint64 Type = 3;
+}
+message AddResponse {
+}
+
+// 更新
+message UpdateRequest {
+  uint64 Id = 1;
+  string Code = 2;
+  string Name = 3;
+  uint64 Type = 4;
+}
+message UpdateResponse {
+}
+
+// 查看
+message GetRequest {
+  uint64 Id = 1;
+}
+message GetResponse {
+  uint64 Id = 1;
+  string Code = 2;
+  string Name = 3;
+  uint64 Type = 4;
+}
+
+// 删除
+message DeleteRequest {
+  uint64 Id = 1;
+}
+message DeleteResponse {
+}
+
+service Courseware {
+  rpc Add(AddRequest) returns(AddResponse);
+  rpc Update(UpdateRequest) returns(UpdateResponse);
+  rpc Get(GetRequest) returns(GetResponse);
+  rpc Delete(DeleteRequest) returns(DeleteResponse);
+}

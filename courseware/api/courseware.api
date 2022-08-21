@@ -1,0 +1,52 @@
+type (
+	// 新增
+	AddRequest {
+		Code string `json:"code"`
+		Name string `json:"name"`
+		Type uint64 `json:"type"`
+	}
+	AddResponse {
+	}
+
+	// 更新
+	UpdateRequest {
+		Id   uint64 `json:"id"`
+		Code string `json:"code"`
+		Name string `json:"name"`
+		Type uint64 `json:"type"`
+	}
+	UpdateResponse {
+	}
+
+	// 查看
+	GetRequest {
+		Id uint64 `json:"id"`
+	}
+	GetResponse {
+		Id   uint64 `json:"id"`
+		Code string `json:"code"`
+		Name string `json:"name"`
+		Type uint64 `json:"type"`
+	}
+
+	// 删除
+	DeleteRequest {
+		Id uint64 `json:"id"`
+	}
+	DeleteResponse {
+	}
+)
+
+service courseware {
+	@handler coursewareAdd
+	post /api/courseware/add (AddRequest) returns (AddResponse)
+	
+	@handler coursewareUpdate
+	post /api/courseware/update (UpdateRequest) returns (UpdateResponse)
+	
+	@handler coursewareGet
+	post /api/courseware/get (GetRequest) returns (GetResponse)
+	
+	@handler coursewareDelete
+	post /api/courseware/delete (DeleteRequest) returns (DeleteResponse)
+}

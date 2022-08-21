@@ -1,0 +1,34 @@
+package logic
+
+import (
+	"context"
+	"google.golang.org/grpc/status"
+
+	"go-zero-courseware/courseware/rpc/courseware"
+	"go-zero-courseware/courseware/rpc/internal/svc"
+
+	"github.com/zeromicro/go-zero/core/logx"
+)
+
+type DeleteLogic struct {
+	ctx    context.Context
+	svcCtx *svc.ServiceContext
+	logx.Logger
+}
+
+func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteLogic {
+	return &DeleteLogic{
+		ctx:    ctx,
+		svcCtx: svcCtx,
+		Logger: logx.WithContext(ctx),
+	}
+}
+
+func (l *DeleteLogic) Delete(in *courseware.DeleteRequest) (*courseware.DeleteResponse, error) {
+	err := l.svcCtx.CoursewareModel.Delete(l.ctx, in.Id)
+	if err != nil {
+		return nil, status.Error(500, err.Error())
+	}
+
+	return &courseware.DeleteResponse{}, nil
+}

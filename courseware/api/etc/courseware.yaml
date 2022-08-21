@@ -1,0 +1,9 @@
+Name: courseware
+Host: 0.0.0.0
+Port: 8400
+
+CoursewareRpc:
+  Etcd:
+    Hosts:
+      - etcd:2379
+    Key: courseware.rpc
