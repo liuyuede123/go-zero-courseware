@@ -16,8 +16,9 @@ message LoginResponse {
 // 注册
 message RegisterRequest {
   string LoginName = 1;
-  string Password = 2;
-  uint32 Sex = 3;
+  string Username = 2;
+  string Password = 3;
+  uint64 Sex = 4;
 }
 message RegisterResponse {
 }
@@ -30,7 +31,7 @@ message UserInfoResponse {
   uint64 Id = 1;
   string Username = 2;
   string LoginName = 3;
-  uint32 Sex = 4;
+  uint64 Sex = 4;
 }
 
 service User {

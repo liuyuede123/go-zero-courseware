@@ -1,10 +1,9 @@
-Name: courseware.rpc
-ListenOn: 0.0.0.0:9400
+Name: user.rpc
+ListenOn: 0.0.0.0:8300
 Etcd:
   Hosts:
   - etcd:2379
-  Key: courseware.rpc
-
+  Key: user.rpc
 
 # mysql数据源
 Mysql:
@@ -14,3 +13,5 @@ Mysql:
 CacheRedis:
   - Host: 192.168.0.100:6379
     Pass:
+
+

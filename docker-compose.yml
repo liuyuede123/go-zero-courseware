@@ -61,3 +61,33 @@ services:
     networks:
       - backend
     restart: always                      # 指定容器退出后的重启策略为始终重启
+
+  user-rpc: # 自定义容器名称
+    build:
+      context: user                 # 指定构建使用的 Dockerfile 文件
+      dockerfile: rpc/Dockerfile
+    environment: # 设置环境变量
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports: # 设置端口映射
+      - "9300:9300"  # 课件服务rpc端口
+    stdin_open: true                     # 打开标准输入，可以接受外部输入
+    tty: true
+    networks:
+      - backend
+    restart: always                      # 指定容器退出后的重启策略为始终重启
+
+  user-api: # 自定义容器名称
+    build:
+      context: user                  # 指定构建使用的 Dockerfile 文件
+      dockerfile: api/Dockerfile
+    environment: # 设置环境变量
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports: # 设置端口映射
+      - "8300:8300"  # 课件服务api端口
+    stdin_open: true                     # 打开标准输入，可以接受外部输入
+    tty: true
+    networks:
+      - backend
+    restart: always                      # 指定容器退出后的重启策略为始终重启

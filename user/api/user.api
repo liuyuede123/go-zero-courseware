@@ -1,42 +1,43 @@
 type (
-    // 登录
-    LoginRequest {
-        LoginName string `json:"loginName"`
-        Password string `json:"password"`
-    }
-    LoginResponse {
-        Id uint64 `json:"id"`
-        Token string `json:"token"`
-    }
+	// 登录
+	LoginRequest {
+		LoginName string `json:"loginName"`
+		Password  string `json:"password"`
+	}
+	LoginResponse {
+		Id    uint64 `json:"id"`
+		Token string `json:"token"`
+	}
 
-        // 注册
-    RegisterRequest {
-        LoginName string `json:"loginName"`
-        Password string `json:"password"`
-        Sex uint64 `json:"sex"`
-    }
-    RegisterResponse {
-    }
+	// 注册
+	RegisterRequest {
+		LoginName string `json:"loginName"`
+		Username  string `json:"username"`
+		Password  string `json:"password"`
+		Sex       uint64 `json:"sex"`
+	}
+	RegisterResponse {
+	}
 
-        // 用户信息
-    UserInfoRequest {
-        Id uint64 `json:"id"`
-    }
-    UserInfoResponse {
-        Id uint64 `json:"id"`
-        Username string `json:"username"`
-        LoginName string `json:"loginName"`
-        Sex uint64 `json:"sex"`
-    }
+	// 用户信息
+	UserInfoRequest {
+		Id uint64 `json:"id"`
+	}
+	UserInfoResponse {
+		Id        uint64 `json:"id"`
+		Username  string `json:"username"`
+		LoginName string `json:"loginName"`
+		Sex       uint64 `json:"sex"`
+	}
 )
 
 service user {
-    @handler userLogin
-    post /api/user/login (LoginRequest) returns (LoginResponse)
-
-    @handler userRegister
-    post /api/user/register (RegisterRequest) returns (RegisterResponse)
-
-    @handler userInfo
-    post /api/user/userInfo (UserInfoRequest) returns (UserInfoResponse)
+	@handler userLogin
+	post /api/user/login (LoginRequest) returns (LoginResponse)
+	
+	@handler userRegister
+	post /api/user/register (RegisterRequest) returns (RegisterResponse)
+	
+	@handler userInfo
+	post /api/user/userInfo (UserInfoRequest) returns (UserInfoResponse)
 }
