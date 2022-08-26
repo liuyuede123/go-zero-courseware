@@ -7,3 +7,7 @@ UserRpc:
     Hosts:
       - etcd:2379
     Key: user.rpc
+
+Auth:
+  AccessSecret: 38f9c7af24ff11edb92900163e30ef81
+  AccessExpire: 86400

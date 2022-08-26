@@ -37,6 +37,12 @@ service user {
 	
 	@handler userRegister
 	post /api/user/register (RegisterRequest) returns (RegisterResponse)
+}
+
+@server (
+	jwt : Auth
+)
+service user {
 	
 	@handler userInfo
 	post /api/user/userInfo (UserInfoRequest) returns (UserInfoResponse)

@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"go-zero-courseware/courseware/api/response"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -19,10 +20,6 @@ func coursewareAddHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewCoursewareAddLogic(r.Context(), svcCtx)
 		resp, err := l.CoursewareAdd(&req)
-		if err != nil {
-			httpx.Error(w, err)
-		} else {
-			httpx.OkJson(w, resp)
-		}
+		response.Response(w, resp, err)
 	}
 }

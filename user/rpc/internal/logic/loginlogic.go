@@ -3,6 +3,7 @@ package logic
 import (
 	"context"
 	"go-zero-courseware/user/rpc/model"
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc/status"
 
 	"go-zero-courseware/user/rpc/internal/svc"
@@ -34,7 +35,8 @@ func (l *LoginLogic) Login(in *user.LoginRequest) (*user.LoginResponse, error) {
 		return nil, status.Error(500, err.Error())
 	}
 
-	if in.Password != userInfo.Password {
+	err = bcrypt.CompareHashAndPassword([]byte(userInfo.Password), []byte(in.Password))
+	if err != nil {
 		return nil, status.Error(5000, "密码错误")
 	}
 

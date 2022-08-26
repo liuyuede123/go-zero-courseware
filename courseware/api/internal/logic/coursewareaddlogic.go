@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"errors"
 	"go-zero-courseware/courseware/rpc/coursewareclient"
 
 	"go-zero-courseware/courseware/api/internal/svc"
@@ -31,7 +32,7 @@ func (l *CoursewareAddLogic) CoursewareAdd(req *types.AddRequest) (resp *types.A
 		Type: req.Type,
 	})
 	if err != nil {
-		return nil, err
+		return nil, errors.New("新增课件失败")
 	}
 
 	return &types.AddResponse{}, nil

@@ -37,6 +37,9 @@ type (
 	}
 )
 
+@server (
+	jwt : Auth
+)
 service courseware {
 	@handler coursewareAdd
 	post /api/courseware/add (AddRequest) returns (AddResponse)
