@@ -91,3 +91,30 @@ services:
     networks:
       - backend
     restart: always                      # 指定容器退出后的重启策略为始终重启
+
+  prometheus:
+    build:
+      context: ./prometheus
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    volumes:
+      - ./prometheus/prometheus.yml:/opt/bitnami/prometheus/conf/prometheus.yml  # 将 prometheus 配置文件挂载到容器里
+      - ./prometheus/target.json:/opt/bitnami/prometheus/conf/targets.json  # 将 prometheus 配置文件挂载到容器里
+    ports:
+      - "9090:9090"                     # 设置容器9090端口映射指定宿主机端口，用于宿主机访问可视化web
+    networks:
+      - backend
+    restart: always
+
+  grafana:
+    build:
+      context: ./grafana
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "3000:3000"
+    networks:
+      - backend
+    restart: always

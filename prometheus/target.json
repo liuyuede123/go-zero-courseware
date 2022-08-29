@@ -1,0 +1,38 @@
+[
+  {
+    "targets": ["user-api:9081"],
+    "labels": {
+      "job": "user-api",
+      "app": "user-api",
+      "env": "test",
+      "instance": "user-api:8300"
+    }
+  },
+  {
+    "targets": ["user-rpc:9091"],
+    "labels": {
+      "job": "user-rpc",
+      "app": "user-rpc",
+      "env": "test",
+      "instance": "user-api:9300"
+    }
+  },
+  {
+    "targets": ["courseware-api:9082"],
+    "labels": {
+      "job": "courseware-api",
+      "app": "courseware-api",
+      "env": "test",
+      "instance": "courseware-api:8400"
+    }
+  },
+  {
+    "targets": ["courseware-rpc:9092"],
+    "labels": {
+      "job": "courseware-rpc",
+      "app": "courseware-rpc",
+      "env": "test",
+      "instance": "courseware-rpc:9400"
+    }
+  }
+]
