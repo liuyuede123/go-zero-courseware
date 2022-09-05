@@ -19,3 +19,9 @@ Prometheus:
   Port: 9091
   Path: /metrics
 
+Telemetry:
+  Name: user-rpc
+  Endpoint: http://jaeger:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
+

@@ -19,3 +19,9 @@ Prometheus:
   Host: 0.0.0.0
   Port: 9092
   Path: /metrics
+
+Telemetry:
+  Name: courseware-rpc
+  Endpoint: http://jaeger:14268/api/traces
+  Sampler: 1.0
+  Batcher: jaeger
