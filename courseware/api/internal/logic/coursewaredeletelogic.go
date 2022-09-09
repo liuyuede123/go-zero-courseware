@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-	"errors"
+	"go-zero-courseware/courseware/common/xerr"
 	"go-zero-courseware/courseware/rpc/coursewareclient"
 
 	"go-zero-courseware/courseware/api/internal/svc"
@@ -30,7 +30,7 @@ func (l *CoursewareDeleteLogic) CoursewareDelete(req *types.DeleteRequest) (resp
 		Id: req.Id,
 	})
 	if err != nil {
-		return nil, errors.New("删除课件失败")
+		return nil, xerr.NewErrCodeMsg(5000, "删除课件失败")
 	}
 
 	return &types.DeleteResponse{}, nil

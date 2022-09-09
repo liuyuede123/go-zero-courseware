@@ -2,6 +2,7 @@ package logic
 
 import (
 	"context"
+	"github.com/pkg/errors"
 	"google.golang.org/grpc/status"
 
 	"go-zero-courseware/courseware/rpc/courseware"
@@ -27,7 +28,7 @@ func NewDeleteLogic(ctx context.Context, svcCtx *svc.ServiceContext) *DeleteLogi
 func (l *DeleteLogic) Delete(in *courseware.DeleteRequest) (*courseware.DeleteResponse, error) {
 	err := l.svcCtx.CoursewareModel.Delete(l.ctx, in.Id)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(status.Errorf(500, "删除课件失败"), "id: %d,err:%v", in.Id, err)
 	}
 
 	return &courseware.DeleteResponse{}, nil

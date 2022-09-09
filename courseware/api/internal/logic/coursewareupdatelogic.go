@@ -2,7 +2,7 @@ package logic
 
 import (
 	"context"
-	"errors"
+	"go-zero-courseware/courseware/common/xerr"
 	"go-zero-courseware/courseware/rpc/coursewareclient"
 
 	"go-zero-courseware/courseware/api/internal/svc"
@@ -33,7 +33,7 @@ func (l *CoursewareUpdateLogic) CoursewareUpdate(req *types.UpdateRequest) (resp
 		Type: req.Type,
 	})
 	if err != nil {
-		return nil, errors.New("更新课件失败")
+		return nil, xerr.NewErrCodeMsg(5000, "更新课件失败")
 	}
 
 	return &types.UpdateResponse{}, nil

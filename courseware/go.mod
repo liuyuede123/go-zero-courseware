@@ -3,6 +3,7 @@ module go-zero-courseware/courseware
 go 1.17
 
 require (
+	github.com/pkg/errors v0.9.1
 	github.com/zeromicro/go-zero v1.4.0
 	google.golang.org/grpc v1.48.0
 	google.golang.org/protobuf v1.28.1

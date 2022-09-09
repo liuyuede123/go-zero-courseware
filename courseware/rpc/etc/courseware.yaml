@@ -15,6 +15,11 @@ CacheRedis:
   - Host: 192.168.22.187:6379
     Pass:
 
+Log:
+  Mode: file
+  Path: /var/log/go-zero/courseware-rpc
+  Level: error
+
 Prometheus:
   Host: 0.0.0.0
   Port: 9092

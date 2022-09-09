@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"go-zero-courseware/courseware/api/response"
+	"go-zero-courseware/courseware/common/response"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -20,6 +20,6 @@ func coursewareAddHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewCoursewareAddLogic(r.Context(), svcCtx)
 		resp, err := l.CoursewareAdd(&req)
-		response.Response(w, resp, err)
+		response.HttpResult(r, w, resp, err)
 	}
 }

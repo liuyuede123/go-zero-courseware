@@ -39,6 +39,8 @@ services:
     environment: # 设置环境变量
       - TZ=Asia/Shanghai
     privileged: true
+    volumes:
+      - ./data/log/courseware-rpc:/var/log/go-zero/courseware-rpc
     ports: # 设置端口映射
       - "9400:9400"  # 课件服务rpc端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
@@ -54,6 +56,8 @@ services:
     environment: # 设置环境变量
       - TZ=Asia/Shanghai
     privileged: true
+    volumes:
+      - ./data/log/courseware-api:/var/log/go-zero/courseware-api
     ports: # 设置端口映射
       - "8400:8400"  # 课件服务api端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入

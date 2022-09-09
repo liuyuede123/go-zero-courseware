@@ -2,10 +2,11 @@ package logic
 
 import (
 	"context"
-	"google.golang.org/grpc/status"
-
+	"github.com/pkg/errors"
+	"go-zero-courseware/courseware/common/xerr"
 	"go-zero-courseware/courseware/rpc/courseware"
 	"go-zero-courseware/courseware/rpc/internal/svc"
+	"go-zero-courseware/courseware/rpc/model"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -27,12 +28,15 @@ func NewUpdateLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UpdateLogi
 func (l *UpdateLogic) Update(in *courseware.UpdateRequest) (*courseware.UpdateResponse, error) {
 	cw, err := l.svcCtx.CoursewareModel.FindOne(l.ctx, in.Id)
 	if err != nil {
-		return nil, status.Error(5000, "课件不存在")
+		if err == model.ErrNotFound {
+			return nil, xerr.NewErrCodeMsg(5000, "数据不存在")
+		}
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "查询课件失败"), "id: %d,err:%v", in.Id, err)
 	}
 
 	codeCw, err := l.svcCtx.CoursewareModel.FindOneByCode(l.ctx, in.Code)
 	if err == nil && codeCw.Id != cw.Id {
-		return nil, status.Error(5000, "课件编号已存在")
+		return nil, xerr.NewErrCodeMsg(5000, "课件编号已存在")
 	}
 
 	if in.Code != "" {
@@ -46,7 +50,7 @@ func (l *UpdateLogic) Update(in *courseware.UpdateRequest) (*courseware.UpdateRe
 	}
 	err = l.svcCtx.CoursewareModel.Update(l.ctx, cw)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "更新课件失败"), "id: %d,err:%v", in.Id, err)
 	}
 
 	return &courseware.UpdateResponse{}, nil

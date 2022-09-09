@@ -12,6 +12,11 @@ Auth:
   AccessSecret: 38f9c7af24ff11edb92900163e30ef81
   AccessExpire: 86400
 
+Log:
+  Mode: file
+  Path: /var/log/go-zero/courseware-api
+  Level: error
+
 Prometheus:
   Host: 0.0.0.0
   Port: 9082

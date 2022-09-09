@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"go-zero-courseware/courseware/api/response"
+	"go-zero-courseware/courseware/common/response"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -11,7 +11,7 @@ import (
 )
 
 func coursewareDeleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
+	f := func(w http.ResponseWriter, r *http.Request) {
 		var req types.DeleteRequest
 		if err := httpx.Parse(r, &req); err != nil {
 			httpx.Error(w, err)
@@ -20,6 +20,7 @@ func coursewareDeleteHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewCoursewareDeleteLogic(r.Context(), svcCtx)
 		resp, err := l.CoursewareDelete(&req)
-		response.Response(w, resp, err)
+		response.HttpResult(r, w, resp, err)
 	}
+	return f
 }

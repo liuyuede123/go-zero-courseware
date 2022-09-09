@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"go-zero-courseware/courseware/common/response"
 
 	"go-zero-courseware/courseware/api/internal/config"
 	"go-zero-courseware/courseware/api/internal/handler"
@@ -20,7 +21,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(response.JwtUnauthorizedResult))
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)
