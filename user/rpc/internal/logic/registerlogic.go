@@ -2,13 +2,13 @@ package logic
 
 import (
 	"context"
+	"github.com/pkg/errors"
+	"github.com/zeromicro/go-zero/core/logx"
+	"go-zero-courseware/user/common/xerr"
 	"go-zero-courseware/user/rpc/internal/svc"
 	"go-zero-courseware/user/rpc/model"
 	"go-zero-courseware/user/rpc/user"
 	"golang.org/x/crypto/bcrypt"
-	"google.golang.org/grpc/status"
-
-	"github.com/zeromicro/go-zero/core/logx"
 )
 
 type RegisterLogic struct {
@@ -28,16 +28,16 @@ func NewRegisterLogic(ctx context.Context, svcCtx *svc.ServiceContext) *Register
 func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterResponse, error) {
 	_, err := l.svcCtx.UserModel.FindOneByLoginName(l.ctx, in.LoginName)
 	if err == nil {
-		return nil, status.Error(5000, "登录名已存在")
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(5000, "用户名已存在"), "loginName: %s,err:%v", in.LoginName, err)
 	}
 
 	if err != model.ErrNotFound {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "用户注册失败"), "loginName: %s,err:%v", in.LoginName, err)
 	}
 
 	pwd, err := bcrypt.GenerateFromPassword([]byte(in.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "服务器异常"), "loginName: %s,err:%v", in.LoginName, err)
 	}
 	newUser := model.User{
 		LoginName: in.LoginName,
@@ -47,7 +47,7 @@ func (l *RegisterLogic) Register(in *user.RegisterRequest) (*user.RegisterRespon
 	}
 	_, err = l.svcCtx.UserModel.Insert(l.ctx, &newUser)
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "写入数据失败"), "loginName: %s,err:%v", in.LoginName, err)
 	}
 
 	return &user.RegisterResponse{}, nil

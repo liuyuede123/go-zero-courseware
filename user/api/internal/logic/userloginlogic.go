@@ -3,8 +3,9 @@ package logic
 import (
 	"context"
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/pkg/errors"
+	"go-zero-courseware/user/common/xerr"
 	"go-zero-courseware/user/rpc/userclient"
-	"google.golang.org/grpc/status"
 	"time"
 
 	"go-zero-courseware/user/api/internal/svc"
@@ -33,13 +34,13 @@ func (l *UserLoginLogic) UserLogin(req *types.LoginRequest) (resp *types.LoginRe
 		Password:  req.Password,
 	})
 	if err != nil {
-		return nil, err
+		return nil, xerr.NewErrCodeMsg(500, "用户登录失败")
 	}
 
 	now := time.Now().Unix()
 	login.Token, err = l.getJwtToken(l.svcCtx.Config.Auth.AccessSecret, now, l.svcCtx.Config.Auth.AccessExpire, int64(login.Id))
 	if err != nil {
-		return nil, status.Error(5000, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(5000, "token生成失败"), "loginName: %s,err:%v", req, err)
 	}
 	return &types.LoginResponse{
 		Id:    login.Id,

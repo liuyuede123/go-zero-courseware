@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
-	"go-zero-courseware/user/rpc/userclient"
-	"google.golang.org/grpc/status"
-
 	"go-zero-courseware/user/api/internal/svc"
 	"go-zero-courseware/user/api/internal/types"
+	"go-zero-courseware/user/common/xerr"
+	"go-zero-courseware/user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -33,7 +32,7 @@ func (l *UserRegisterLogic) UserRegister(req *types.RegisterRequest) (resp *type
 		Sex:       req.Sex,
 	})
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, xerr.NewErrCodeMsg(5000, "注册用户失败")
 	}
 
 	return &types.RegisterResponse{}, nil

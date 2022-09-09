@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"go-zero-courseware/user/api/response"
+	"go-zero-courseware/user/common/response"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -20,6 +20,6 @@ func userLoginHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewUserLoginLogic(r.Context(), svcCtx)
 		resp, err := l.UserLogin(&req)
-		response.Response(w, resp, err)
+		response.HttpResult(r, w, resp, err)
 	}
 }

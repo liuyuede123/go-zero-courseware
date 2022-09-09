@@ -2,11 +2,10 @@ package logic
 
 import (
 	"context"
-	"go-zero-courseware/user/rpc/userclient"
-	"google.golang.org/grpc/status"
-
 	"go-zero-courseware/user/api/internal/svc"
 	"go-zero-courseware/user/api/internal/types"
+	"go-zero-courseware/user/common/xerr"
+	"go-zero-courseware/user/rpc/userclient"
 
 	"github.com/zeromicro/go-zero/core/logx"
 )
@@ -30,7 +29,7 @@ func (l *UserInfoLogic) UserInfo(req *types.UserInfoRequest) (resp *types.UserIn
 		Id: req.Id,
 	})
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, xerr.NewErrCodeMsg(500, "用户查询失败")
 	}
 
 	return &types.UserInfoResponse{

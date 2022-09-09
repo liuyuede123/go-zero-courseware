@@ -7,17 +7,22 @@ Etcd:
 
 # mysql数据源
 Mysql:
-  DataSource: root:liufutian@tcp(192.168.0.106:3306)/go_zero_courseware?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
+  DataSource: root:liufutian@tcp(192.168.22.187:3306)/go_zero_courseware?charset=utf8mb4&parseTime=true&loc=Asia%2FShanghai
 
 # redis缓存
 CacheRedis:
-  - Host: 192.168.0.106:6379
+  - Host: 192.168.22.187:6379
     Pass:
 
 Prometheus:
   Host: 0.0.0.0
   Port: 9091
   Path: /metrics
+
+Log:
+  Mode: file
+  Path: /var/log/go-zero/user-rpc
+  Level: error
 
 Telemetry:
   Name: user-rpc

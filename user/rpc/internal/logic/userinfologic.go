@@ -2,10 +2,10 @@ package logic
 
 import (
 	"context"
-	"go-zero-courseware/user/rpc/model"
-	"google.golang.org/grpc/status"
-
+	"github.com/pkg/errors"
+	"go-zero-courseware/user/common/xerr"
 	"go-zero-courseware/user/rpc/internal/svc"
+	"go-zero-courseware/user/rpc/model"
 	"go-zero-courseware/user/rpc/user"
 
 	"github.com/zeromicro/go-zero/core/logx"
@@ -28,10 +28,10 @@ func NewUserInfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserInfo
 func (l *UserInfoLogic) UserInfo(in *user.UserInfoRequest) (*user.UserInfoResponse, error) {
 	userInfo, err := l.svcCtx.UserModel.FindOne(l.ctx, in.Id)
 	if err == model.ErrNotFound {
-		return nil, status.Error(5000, "用户不存在")
+		return nil, xerr.NewErrCodeMsg(5000, "用户不存在")
 	}
 	if err != nil {
-		return nil, status.Error(500, err.Error())
+		return nil, errors.Wrapf(xerr.NewErrCodeMsg(500, "用户查询失败"), "id: %d,err:%v", in.Id, err)
 	}
 
 	return &user.UserInfoResponse{

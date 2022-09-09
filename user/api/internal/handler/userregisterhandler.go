@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"go-zero-courseware/user/api/response"
+	"go-zero-courseware/user/common/response"
 	"net/http"
 
 	"github.com/zeromicro/go-zero/rest/httpx"
@@ -20,6 +20,6 @@ func userRegisterHandler(svcCtx *svc.ServiceContext) http.HandlerFunc {
 
 		l := logic.NewUserRegisterLogic(r.Context(), svcCtx)
 		resp, err := l.UserRegister(&req)
-		response.Response(w, resp, err)
+		response.HttpResult(r, w, resp, err)
 	}
 }

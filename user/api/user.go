@@ -3,10 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-
 	"go-zero-courseware/user/api/internal/config"
 	"go-zero-courseware/user/api/internal/handler"
 	"go-zero-courseware/user/api/internal/svc"
+	"go-zero-courseware/user/common/response"
 
 	"github.com/zeromicro/go-zero/core/conf"
 	"github.com/zeromicro/go-zero/rest"
@@ -20,7 +20,7 @@ func main() {
 	var c config.Config
 	conf.MustLoad(*configFile, &c)
 
-	server := rest.MustNewServer(c.RestConf)
+	server := rest.MustNewServer(c.RestConf, rest.WithUnauthorizedCallback(response.JwtUnauthorizedResult))
 	defer server.Stop()
 
 	ctx := svc.NewServiceContext(c)

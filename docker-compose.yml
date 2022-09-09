@@ -6,14 +6,14 @@ networks:
 
 # 服务容器配置
 services:
-  etcd:                                  # 自定义容器名称
+  etcd: # 自定义容器名称
     build:
       context: etcd                    # 指定构建使用的 Dockerfile 文件
     environment:
       - TZ=Asia/Shanghai
       - ALLOW_NONE_AUTHENTICATION=yes
       - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
-    ports:                               # 设置端口映射
+    ports: # 设置端口映射
       - "2379:2379"
     networks:
       - backend
@@ -26,7 +26,7 @@ services:
       - TZ=Asia/Shanghai
     ports:
       - "7000:8080"                    # 设置容器8080端口映射指定宿主机端口，用于宿主机访问可视化web
-    depends_on:                                       # 依赖容器
+    depends_on: # 依赖容器
       - etcd                                          # 在 etcd 服务容器启动后启动
     networks:
       - backend
@@ -69,6 +69,8 @@ services:
     environment: # 设置环境变量
       - TZ=Asia/Shanghai
     privileged: true
+    volumes:
+      - ./data/log/user-rpc:/var/log/go-zero/user-rpc
     ports: # 设置端口映射
       - "9300:9300"  # 课件服务rpc端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
@@ -84,6 +86,8 @@ services:
     environment: # 设置环境变量
       - TZ=Asia/Shanghai
     privileged: true
+    volumes:
+      - ./data/log/user-api:/var/log/go-zero/user-api
     ports: # 设置端口映射
       - "8300:8300"  # 课件服务api端口
     stdin_open: true                     # 打开标准输入，可以接受外部输入
@@ -156,4 +160,80 @@ services:
     networks:
       - backend
     restart: always
+
+  kibana:
+    build:
+      context: ./kibana
+    environment:
+      - elasticsearch.hosts=http://elasticsearch:9200
+      - TZ=Asia/Shanghai
+    privileged: true
+    ports:
+      - "5601:5601"
+    networks:
+      - backend
+    restart: always
+    depends_on:
+      - elasticsearch
+
+  go-stash:
+    build:
+      context: ./go-stash
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    volumes:
+      - ./go-stash/go-stash.yml:/app/etc/config.yaml
+    networks:
+      - backend
+    restart: always
+    depends_on:
+      - elasticsearch
+      - kafka
+
+  filebeat:
+    build:
+      context: ./filebeat
+    environment:
+      - TZ=Asia/Shanghai
+    entrypoint: "filebeat -e -strict.perms=false"
+    privileged: true
+    volumes:
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml
+      - ./data/log:/var/lib/docker/containers
+    networks:
+      - backend
+    restart: always
+    depends_on:
+      - kafka
+
+  zookeeper:
+    build:
+      context: ./zookeeper
+    environment:
+      - TZ=Asia/Shanghai
+    privileged: true
+    networks:
+      - backend
+    ports:
+      - "2181:2181"
+    restart: always
+
+  kafka:
+    build:
+      context: ./kafka
+    ports:
+      - "9092:9092"
+    environment:
+      - KAFKA_ADVERTISED_HOST_NAME=kafka
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=false
+      - TZ=Asia/Shanghai
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    restart: always
+    privileged: true
+    networks:
+      - backend
+    depends_on:
+      - zookeeper
 
